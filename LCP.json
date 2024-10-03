@@ -1,0 +1,48 @@
+{
+  "kind": "Deployment",
+  "id": "legacyintranet",
+  "cpu": 1,
+  "memory": 128,
+  "scale": 1,
+  "deploy": true,
+  "ports": [
+    {
+      "port": 3000,
+      "external": true
+    }
+  ],
+  "readinessProbe": {
+    "httpGet": {
+      "path": "/ready",
+      "port": 3000
+    },
+    "initialDelaySeconds": 60,
+    "timeoutSeconds": 10,
+    "failureThreshold": 12
+  },
+  "livenessProbe": {
+    "httpGet": {
+      "path": "/ready",
+      "port": 3000
+    },
+    "initialDelaySeconds": 60,
+    "timeoutSeconds": 10,
+    "failureThreshold": 12
+  },
+  "environments": {
+    "infra": {
+      "deploy": false
+    }
+  },
+  "dependencies": [
+    "search"
+  ],
+  "env": {
+    "PORT": "3000",
+    "HOSTNAME": "legacyintranet",
+    "PROTOCOL": "http",
+    "ES_INDEX": "legacyintranet",
+    "ES_ENDPOINT": "http://search:9200",
+    "INDEX_ON_STARTUP": "false"
+  }
+}

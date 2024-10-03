@@ -1,0 +1,19 @@
+{
+  "name": "legacyintranet",
+  "version": "1.0.0",
+  "description": "Legacy intranet to demonstrate Liferay federated search",
+  "main": "index.js",
+  "author": "Peter Richards",
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.15.0",
+    "dotenv-defaults": "^5.0.2",
+    "express": "^4.21.0",
+    "fs": "^0.0.1-security",
+    "handlebars": "^4.7.8",
+    "path": "^0.12.7"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "type": "module"
+}
