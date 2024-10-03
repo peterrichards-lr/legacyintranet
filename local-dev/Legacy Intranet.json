@@ -1,0 +1,248 @@
+{
+  "schemaVersion" : "1.1",
+  "title_i18n" : {
+    "en_US" : "Legacy Intranet"
+  },
+  "configuration" : {
+    "highlightConfiguration" : { },
+    "parameterConfiguration" : { },
+    "aggregationConfiguration" : { },
+    "generalConfiguration" : {
+      "searchableAssetTypes" : [ ],
+      "clauseContributorsExcludes" : [ "*" ],
+      "clauseContributorsIncludes" : [ ]
+    },
+    "advancedConfiguration" : {
+      "source" : {
+        "fetchSource" : true
+      }
+    },
+    "sortConfiguration" : { },
+    "queryConfiguration" : {
+      "applyIndexerClauses" : true
+    }
+  },
+  "description_i18n" : { },
+  "elementInstances" : [ {
+    "sxpElement" : {
+      "schemaVersion" : "1.0",
+      "title_i18n" : {
+        "en-US" : "text-match-over-multiple-fields"
+      },
+      "description" : "Search for a text match over multiple text fields.",
+      "readOnly" : true,
+      "title" : "Text Match Over Multiple Fields",
+      "type" : 0,
+      "userName" : "",
+      "version" : "1.0",
+      "externalReferenceCode" : "TEXT_MATCH_OVER_MULTIPLE_FIELDS",
+      "description_i18n" : {
+        "en-US" : "text-match-over-multiple-fields-description"
+      },
+      "modifiedDate" : "2024-06-07T19:11:41Z",
+      "id" : 38,
+      "createDate" : "2024-06-07T19:11:41Z",
+      "elementDefinition" : {
+        "uiConfiguration" : {
+          "fieldSets" : [ {
+            "fields" : [ {
+              "labelLocalized" : "Fields",
+              "name" : "fields",
+              "typeOptions" : {
+                "boost" : true
+              },
+              "fieldMappings" : [ {
+                "field" : "localized_title",
+                "boost" : 2.0,
+                "locale" : "${context.language_id}"
+              }, {
+                "field" : "content",
+                "boost" : 1.0,
+                "locale" : "${context.language_id}"
+              } ],
+              "label" : "fields",
+              "type" : "fieldMappingList"
+            }, {
+              "labelLocalized" : "Operator",
+              "defaultValue" : "or",
+              "name" : "operator",
+              "typeOptions" : {
+                "options" : [ {
+                  "label" : "OR",
+                  "value" : "or"
+                }, {
+                  "label" : "AND",
+                  "value" : "and"
+                } ]
+              },
+              "label" : "operator",
+              "type" : "select"
+            }, {
+              "labelLocalized" : "Match Type",
+              "defaultValue" : "best_fields",
+              "name" : "type",
+              "typeOptions" : {
+                "options" : [ {
+                  "label" : "Best Fields",
+                  "value" : "best_fields"
+                }, {
+                  "label" : "Most Fields",
+                  "value" : "most_fields"
+                }, {
+                  "label" : "Cross Fields",
+                  "value" : "cross_fields"
+                }, {
+                  "label" : "Phrase",
+                  "value" : "phrase"
+                }, {
+                  "label" : "Phrase Prefix",
+                  "value" : "phrase_prefix"
+                }, {
+                  "label" : "Boolean Prefix",
+                  "value" : "bool_prefix"
+                } ]
+              },
+              "label" : "match-type",
+              "type" : "select"
+            }, {
+              "helpTextLocalized" : "Only use fuzziness with the following match types: best fields, bool prefix, and most fields.",
+              "helpText" : "fuzziness-field-help",
+              "labelLocalized" : "Fuzziness",
+              "defaultValue" : "AUTO",
+              "name" : "fuzziness",
+              "typeOptions" : {
+                "nullable" : true,
+                "options" : [ {
+                  "label" : "Auto",
+                  "value" : "AUTO"
+                }, {
+                  "label" : "0",
+                  "value" : "0"
+                }, {
+                  "label" : "1",
+                  "value" : "1"
+                }, {
+                  "label" : "2",
+                  "value" : "2"
+                } ]
+              },
+              "label" : "fuzziness",
+              "type" : "select"
+            }, {
+              "labelLocalized" : "Minimum Should Match",
+              "defaultValue" : "0",
+              "name" : "minimum_should_match",
+              "typeOptions" : {
+                "nullable" : true
+              },
+              "label" : "min-should-match",
+              "type" : "text"
+            }, {
+              "helpTextLocalized" : "Only use slop with the following match types: phrase and phrase prefix.",
+              "helpText" : "slop-field-help",
+              "labelLocalized" : "Slop",
+              "defaultValue" : "",
+              "name" : "slop",
+              "typeOptions" : {
+                "min" : 0,
+                "nullable" : true,
+                "step" : 1
+              },
+              "label" : "slop",
+              "type" : "number"
+            }, {
+              "labelLocalized" : "Boost",
+              "defaultValue" : 1,
+              "name" : "boost",
+              "typeOptions" : {
+                "min" : 0
+              },
+              "label" : "boost",
+              "type" : "number"
+            }, {
+              "helpTextLocalized" : "If this is set, the search terms entered in the search bar will be replaced by this value.",
+              "helpText" : "text-to-match-field-help",
+              "labelLocalized" : "Text to Match",
+              "name" : "keywords",
+              "typeOptions" : {
+                "required" : false
+              },
+              "label" : "text-to-match",
+              "type" : "keywords"
+            } ]
+          } ]
+        },
+        "configuration" : {
+          "queryConfiguration" : {
+            "queryEntries" : [ {
+              "clauses" : [ {
+                "occur" : "must",
+                "query" : {
+                  "multi_match" : {
+                    "fuzziness" : "${configuration.fuzziness}",
+                    "query" : "${configuration.keywords}",
+                    "minimum_should_match" : "${configuration.minimum_should_match}",
+                    "boost" : "${configuration.boost}",
+                    "fields" : "${configuration.fields}",
+                    "type" : "${configuration.type}",
+                    "operator" : "${configuration.operator}",
+                    "slop" : "${configuration.slop}"
+                  }
+                },
+                "context" : "query"
+              } ]
+            } ]
+          }
+        },
+        "icon" : "picture",
+        "category" : "match"
+      }
+    },
+    "configurationEntry" : {
+      "queryConfiguration" : {
+        "queryEntries" : [ {
+          "clauses" : [ {
+            "occur" : "must",
+            "query" : {
+              "multi_match" : {
+                "fuzziness" : "AUTO",
+                "query" : "${keywords}",
+                "minimum_should_match" : "0",
+                "boost" : 1,
+                "fields" : [ "title^2", "description^1", "url" ],
+                "type" : "best_fields",
+                "operator" : "or"
+              }
+            },
+            "context" : "query"
+          } ]
+        } ]
+      }
+    },
+    "uiConfigurationValues" : {
+      "fuzziness" : "AUTO",
+      "keywords" : "",
+      "minimum_should_match" : "0",
+      "boost" : 1,
+      "fields" : [ {
+        "languageIdPosition" : 5,
+        "field" : "title",
+        "boost" : 2,
+        "locale" : ""
+      }, {
+        "languageIdPosition" : 11,
+        "field" : "description",
+        "boost" : 1,
+        "locale" : ""
+      }, {
+        "languageIdPosition" : -1,
+        "field" : "url",
+        "locale" : ""
+      } ],
+      "type" : "best_fields",
+      "operator" : "or",
+      "slop" : ""
+    }
+  } ],
+  "externalReferenceCode" : "2748f7b1-4810-fce8-1962-dfb826293743"
+}

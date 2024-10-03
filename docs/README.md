@@ -44,8 +44,27 @@ In Liferay PaaS then just override the defaults with the required values by sett
 
 ## Local Setup
 
-The easiest way to test this locally is to run Elastic Search within a Docker container. The Elastic Search client used by this application is 18.5.0. The following command can be run from the terminal to spin up a Docker container.
+The easiest way to test this locally is to run Elastic Search within a Docker container. The Elastic Search client used by this application is 18.5.0.
 
-`docker run --name es01 -p 9200:9200 -it -m 1GB -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.http.ssl.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.15.0`
+Within the local-dev folder, run the following command to build an Elastic Search image with the require plugins.
+
+`docker build . -f ./Elasticsearch.Dockerfile -t elasticsearchwithplugins:8.15.0`
+
+The following command can be run from the terminal to spin up a Docker container.
+
+`docker run --name es01 -p 9200:9200 -it -m 1GB -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.http.ssl.enabled=false" elasticsearchwithplugins:8.15.0`
 
 Once the docker container is running then use `yarn run start` or `npm run start` to start the application itself.
+
+### Liferay setup
+
+1. Download a Liferay bundle. When testing these steps Liferay DXP 2024.Q3.2 was used.
+2. Copy the [Elastic Search configuration](../local-dev/com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration.config) into the bundles osgi/config directory.
+3. Run the bundle and ensure it starts without error. If there are expections they you may not have used the Elasticsearch.Dockerfile to build the Elastic Search image.
+4. Configure Liferay DXP in the usual way.
+5. Import the [Search Blueprint](../local-dev/Legacy%20Intranet.json) via the UI.
+6. Within the Liferay DXP guest site, create a new Search Result widget Template and copy and paste the content of the [ADT](../local-dev/search-result.adt) and finally save it.
+7. Within the Search page, add the necessary widgets ensuring you include the Federated Search Key. Further help can be found on [Liferay Learn](https://learn.liferay.com/web/guest/w/dxp/using-search/search-pages-and-widgets/search-results/understanding-low-level-search-options).
+8. Search for a keyword, such as leave
+
+A video showing the result is available [here](Legacy%20Intranet.gif)

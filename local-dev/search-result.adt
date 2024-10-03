@@ -1,0 +1,42 @@
+<div class="c-mb-4 c-mt-4 search-total-label">
+	<#if searchContainer.getTotal() == 1>
+		${languageUtil.format(locale, "x-result-for-x", [searchContainer.getTotal(), "<strong>" + htmlUtil.escape(searchResultsPortletDisplayContext.getKeywords()) + "</strong>"], false)}
+	<#else>
+		${languageUtil.format(locale, "x-results-for-x", [searchContainer.getTotal(), "<strong>" + htmlUtil.escape(searchResultsPortletDisplayContext.getKeywords()) + "</strong>"], false)}
+	</#if>
+</div>
+	
+
+<div class="display-list">
+	<ul class="list-group" id="search-results-display-list">
+		<#if searchResultsPortletDisplayContext.getDocuments()?has_content>
+			<#list searchResultsPortletDisplayContext.getDocuments() as document>
+				<li class="list-group-item list-group-item-flex">
+					<div class="autofit-col">
+							<span class="sticker sticker-rounded sticker-secondary sticker-static">
+								<@clay.icon symbol="page" />
+							</span>
+					</div>
+					
+					<div class="autofit-col autofit-col-expand">
+						<section class="autofit-section">
+							<div class="c-mt-0 list-group-title">
+								<a href="${document.get("url")}">
+									${document.get("title")}
+								</a>
+							</div>
+					
+							<div class="search-results-metadata">
+								<p class="list-group-subtext">
+									<span class="subtext-item">
+										<strong>${document.get("description")}</strong>
+									</span>
+								</p>
+							</div>
+						</section>
+					</div>
+				</li>
+			</#list>
+		</#if>
+	</ul>
+</div>
