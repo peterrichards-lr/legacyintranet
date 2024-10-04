@@ -4,6 +4,8 @@
 
 This repository represents a legacy intranet which can be used to showcase Liferay's federated search.
 
+A short demo can be found [here](Legacy%20Intranet.gif)
+
 ## Pages
 
 The [store](../store/) contains JSON documents which serve as both the page content and the document information which will be added to the Elastic Search index.
@@ -21,6 +23,14 @@ In order to add additional pages, simply create a new JSON file as follows. The 
 The "id" value is used as the identifier for the document which is added to the Elastic Search index. In the case of displaying the page within the application, the "title" is the page title and the "description" is the page content.
 
 The pages are build using the Handlebar templates located [here](../templates).
+
+### Indexing / Reindexing Pages
+
+The default configuration, see below, is to create and add the documents to the Elastic Search index. In addition to this there is a /reindex endpoint which will allow you to reindex on demand.
+
+### Rate Limiting
+
+The application uses a rate limiter to prevent too many requests. This can be configured in the .env file or via environment variables.
 
 ## Liferay Search
 
@@ -67,4 +77,4 @@ Once the docker container is running then use `yarn run start` or `npm run start
 7. Within the Search page, add the necessary widgets ensuring you include the Federated Search Key. Further help can be found on [Liferay Learn](https://learn.liferay.com/web/guest/w/dxp/using-search/search-pages-and-widgets/search-results/understanding-low-level-search-options).
 8. Search for a keyword, such as leave
 
-A video showing the result is available [here](Legacy%20Intranet.gif)
+A video showing an overview of the setup is available [here](Liferay%20Search%20Setup.gif)
